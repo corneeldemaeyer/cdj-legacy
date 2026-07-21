@@ -56,7 +56,7 @@ body{
 /* ---------- HEADER ---------- */
 .topbar{
   display:flex; align-items:center; justify-content:space-between;
-  padding:14px 16px 10px; gap:10px;
+  padding:14px 16px 10px;
   border-bottom:1px solid var(--line);
 }
 .brand{
@@ -82,6 +82,7 @@ body{
   background:linear-gradient(180deg,#141519,#181A20);
 }
 #waveCanvas{ display:block; width:100%; height:110px; }
+.overview-wave{ display:block; width:100%; height:34px; touch-action:none; border-top:1px solid var(--line); }
 .playhead-line{
   position:absolute; top:6px; bottom:22px; left:50%; width:2px;
   background:var(--amber); box-shadow:0 0 8px var(--amber);
@@ -93,7 +94,7 @@ body{
 }
 .time-row .mono{ color:var(--text); }
 .empty-hint{
-  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  position:absolute; top:0; right:0; bottom:0; left:0; display:flex; align-items:center; justify-content:center;
   font-size:11px; color:var(--text-dim); letter-spacing:.5px; pointer-events:none;
 }
 
@@ -102,32 +103,40 @@ body{
   display:flex; align-items:center; justify-content:space-between;
   padding:14px 16px 6px;
 }
-.bpm-readout{ display:flex; align-items:baseline; gap:6px; }
+.bpm-readout{ display:flex; align-items:baseline; }
+.bpm-readout > * + *{ margin-left:6px; }
 .bpm-num{ font-size:36px; font-weight:700; color:var(--teal); letter-spacing:1px; line-height:1; }
 .bpm-label{ font-size:11px; color:var(--text-dim); letter-spacing:2px; font-weight:600; }
-.range-toggle{ display:flex; gap:4px; }
+.range-toggle{ display:flex; }
+.range-toggle > * + *{ margin-left:4px; }
 .range-btn{
   background:var(--panel-3); border:1px solid var(--line); color:var(--text-dim);
   font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700;
   padding:7px 9px; border-radius:5px; cursor:pointer;
 }
+.tempo-hdr{ display:flex; align-items:center; }
+.tempo-hdr > * + *{ margin-left:10px; }
 .range-btn.active{ background:var(--amber-dim); border-color:var(--amber); color:var(--amber); }
 
 /* ---------- JOG ---------- */
 .jog-area{
-  display:flex; align-items:center; justify-content:center; gap:18px;
-  padding:8px 16px 14px;
+  display:flex; align-items:center; justify-content:center;
+  padding:8px 6px 14px;
 }
+.jog-area > * + *{ margin-left:8px; }
 .nudge-btn{
-  width:44px; height:96px; border-radius:10px;
+  width:36px; height:84px; border-radius:10px; flex-shrink:0; /* veilige vaste maat, ook op oude Safari */
   background:var(--panel-3); border:1px solid var(--line); color:var(--text-dim);
   font-size:18px; display:flex; align-items:center; justify-content:center;
   user-select:none; cursor:pointer;
 }
+@supports (width:clamp(1px,1vw,2px)){
+  .nudge-btn{ width:clamp(32px,9vw,44px); height:clamp(76px,24vw,96px); }
+}
 .nudge-btn:active, .nudge-btn.pressed{ background:var(--teal-dim); border-color:var(--teal); color:var(--teal); }
 
 .jog{
-  position:relative; width:190px; height:190px; border-radius:50%;
+  position:relative; width:150px; height:150px; border-radius:50%; flex-shrink:0; /* veilige vaste maat */
   background:
     radial-gradient(circle at 50% 42%, #33363f 0%, #23252c 55%, #191a1f 100%);
   border:1px solid var(--line);
@@ -135,17 +144,20 @@ body{
   touch-action:none; cursor:grab;
 }
 .jog-ring{
-  position:absolute; inset:8px; border-radius:50%;
+  position:absolute; top:8px; right:8px; bottom:8px; left:8px; border-radius:50%;
   border:1px dashed #40434f;
 }
+@supports (width:clamp(1px,1vw,2px)){
+  .jog{ width:clamp(140px,46vw,190px); height:clamp(140px,46vw,190px); }
+}
 .jog-marker{
-  position:absolute; top:14px; left:50%; width:3px; height:26px;
-  background:var(--teal); border-radius:2px; transform-origin:50% 81px;
+  position:absolute; top:7%; left:50%; width:3px; height:14%;
+  background:var(--teal); border-radius:2px; transform-origin:50% 350%;
   box-shadow:0 0 6px var(--teal);
 }
 .jog-center{
   position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-  width:64px; height:64px; border-radius:50%;
+  width:34%; height:34%; border-radius:50%;
   background:var(--panel); border:1px solid var(--line);
   display:flex; align-items:center; justify-content:center;
   flex-direction:column; pointer-events:none;
@@ -156,10 +168,11 @@ body{
 
 /* ---------- TRANSPORT ---------- */
 .transport{
-  display:flex; align-items:center; justify-content:center; gap:12px;
+  display:flex; align-items:center; justify-content:center;
   padding:6px 16px 18px;
 }
-.loop-row{ display:flex; gap:8px; padding:10px 16px 0; }
+.loop-row{ display:flex; padding:10px 16px 0; }
+.loop-row > * + *{ margin-left:8px; }
 .lbtn{
   border:none; border-radius:8px; font-family:'Inter',sans-serif; font-weight:700;
   font-size:11px; letter-spacing:1px; cursor:pointer; padding:11px 0;
@@ -173,8 +186,9 @@ body{
 .tbtn{
   border:none; border-radius:8px; font-family:'Inter',sans-serif; font-weight:700;
   font-size:12px; letter-spacing:1px; cursor:pointer; padding:14px 22px;
-  display:flex; align-items:center; gap:8px;
+  display:flex; align-items:center;
 }
+.tbtn > * + *{ margin-left:8px; }
 .tbtn.cue{ background:var(--panel-3); color:var(--text); border:1px solid var(--line); }
 .tbtn.cue:active{ background:var(--red-dim); border-color:var(--red); color:var(--red); }
 .tbtn.play{ background:var(--amber); color:#1a1204; min-width:150px; justify-content:center; }
@@ -206,7 +220,8 @@ body{
 
 /* ---------- EQ ---------- */
 .eq-row{ display:flex; justify-content:space-around; align-items:flex-end; padding-top:4px;}
-.eq-band{ display:flex; flex-direction:column; align-items:center; gap:8px; }
+.eq-band{ display:flex; flex-direction:column; align-items:center; }
+.eq-band > * + *{ margin-top:8px; }
 .eq-val{ font-size:11px; color:var(--text-dim); width:44px; text-align:center; }
 /* verticale sliders: iOS Safari kent geen slider-vertical/writing-mode op range,
    dus we roteren een horizontale slider — werkt overal */
@@ -225,7 +240,8 @@ body{
 .eq-band[data-band="high"] .eq-slider::-webkit-slider-thumb{ background:var(--teal); }
 .eq-label{ font-size:10px; letter-spacing:1.5px; font-weight:700; color:var(--text-dim); }
 
-.master-row{ display:flex; align-items:center; gap:12px; margin-top:16px; }
+.master-row{ display:flex; align-items:center; margin-top:16px; }
+.master-row > * + *{ margin-left:12px; }
 .master-row .lbl{ font-size:10px; letter-spacing:1.5px; font-weight:700; color:var(--text-dim); width:52px;}
 .master-slider{ -webkit-appearance:none; flex:1; height:4px; border-radius:2px; background:var(--panel-3); outline:none;}
 .master-slider::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:#d7dae2; cursor:pointer;}
@@ -234,6 +250,20 @@ body{
 .footnote b{ color:var(--text); }
 
 input[type=range]::-moz-range-thumb{ border:none; }
+
+@media (max-width:340px){
+  .topbar{ padding:12px 12px 8px; }
+  .transport-info{ padding:2px 12px 6px; }
+  .bpm-row{ padding-left:12px; padding-right:12px; }
+  .bpm-num{ font-size:28px; }
+  .ver-badge{ display:none; }
+  .range-btn{ padding:6px 6px; font-size:10px; }
+    .loop-row{ padding:8px 12px 0; }
+    .loop-row > * + *{ margin-left:6px; }
+  .lbtn{ font-size:10px; padding:9px 0; }
+  .tbtn{ padding:12px 14px; font-size:11px; }
+  section, .card{ padding-left:12px; padding-right:12px; }
+}
 </style>
 </head>
 <body>
@@ -251,6 +281,7 @@ input[type=range]::-moz-range-thumb{ border:none; }
 
   <div class="wave-wrap">
     <canvas id="waveCanvas"></canvas>
+    <canvas id="overviewCanvas" class="overview-wave"></canvas>
     <div class="vu-meter">
       <div class="vu-bar"><div class="vu-fill" id="vuFill"></div></div>
     </div>
@@ -267,7 +298,7 @@ input[type=range]::-moz-range-thumb{ border:none; }
     <div class="bpm-readout">
       <span class="bpm-num mono" id="bpmNum">120.00</span>
       <span class="bpm-label">BPM</span>
-      <span class="ver-badge">v13-legacy</span>
+      <span class="ver-badge" id="verBadge">v16</span>
     </div>
     <div class="range-toggle" id="rangeToggle">
       <button class="range-btn" data-range="8">±8%</button>
@@ -290,12 +321,6 @@ input[type=range]::-moz-range-thumb{ border:none; }
     <button class="tbtn cue" id="cueBtn">CUE</button>
     <button class="tbtn play" id="playBtn">▶ PLAY</button>
   </div>
-  <div class="hotcue-row">
-    <button class="hcue" data-cue="A" style="background:var(--red)">A</button>
-    <button class="hcue" data-cue="B" style="background:var(--amber)">B</button>
-    <button class="hcue" data-cue="C" style="background:var(--teal)">C</button>
-    <button class="hcue" data-cue="D" style="background:#9b59b6">D</button>
-  </div>
   <div class="loop-row">
     <button class="lbtn" id="loopHalf">÷2</button>
     <button class="lbtn wide" id="loopBtn">LOOP <span id="loopLen">4</span></button>
@@ -304,15 +329,9 @@ input[type=range]::-moz-range-thumb{ border:none; }
   </div>
 
   <div class="section">
-    <div class="filter-row">
-    <span class="filter-label">FILTER</span>
-    <input type="range" id="filterSlider" class="filter-slider" min="-100" max="100" value="0">
-    <span class="filter-val" id="filterVal">OFF</span>
-  </div>
-
-  <div class="section-head">
+    <div class="section-head">
       <span class="t">TEMPO</span>
-      <span style="display:flex;gap:10px;align-items:center;">
+      <span class="tempo-hdr">
         <button class="range-btn" id="keylockBtn" title="Toonhoogte vasthouden bij tempowijziging">KEYLOCK</button>
         <span class="v mono" id="tempoVal">+0.0%</span>
       </span>
@@ -323,13 +342,7 @@ input[type=range]::-moz-range-thumb{ border:none; }
   </div>
 
   <div class="section">
-    <div class="filter-row">
-    <span class="filter-label">FILTER</span>
-    <input type="range" id="filterSlider" class="filter-slider" min="-100" max="100" value="0">
-    <span class="filter-val" id="filterVal">OFF</span>
-  </div>
-
-  <div class="section-head"><span class="t">EQ (3-BAND)</span><span class="v mono" id="eqSummary"></span></div>
+    <div class="section-head"><span class="t">EQ (3-BAND)</span><span class="v mono" id="eqSummary"></span></div>
     <div class="eq-row">
       <div class="eq-band" data-band="low">
         <div class="eq-val mono" id="lowVal">0 dB</div>
@@ -368,19 +381,15 @@ input[type=range]::-moz-range-thumb{ border:none; }
   let workletReady = false;
   // ---------- Track-geheugen (IndexedDB) ----------
   let db = null;
-  try{
-    if(window.indexedDB){
-      const dbRequest = indexedDB.open('PocketCDJ', 1);
-      dbRequest.onupgradeneeded = (e) => {
-        const d = e.target.result;
-        if(!d.objectStoreNames.contains('tracks')){
-          d.createObjectStore('tracks', {keyPath:'trackId'});
-        }
-      };
-      dbRequest.onsuccess = (e) => { db = e.target.result; };
-      dbRequest.onerror = () => { db = null; };
+  const dbRequest = indexedDB.open('PocketCDJ', 1);
+  dbRequest.onupgradeneeded = (e) => {
+    const d = e.target.result;
+    if(!d.objectStoreNames.contains('tracks')){
+      d.createObjectStore('tracks', {keyPath:'trackId'});
     }
-  }catch(e){ db = null; } // track-geheugen niet beschikbaar op dit toestel — app blijft verder gewoon werken
+  };
+  dbRequest.onsuccess = (e) => { db = e.target.result; };
+  dbRequest.onerror = () => { db = null; };
 
   function trackHash(file) {
     // eenvoudige ID: filenaam + duratie als bytes (niet uniek, maar goed genoeg)
@@ -396,7 +405,6 @@ input[type=range]::-moz-range-thumb{ border:none; }
       bpm: trackBPM,
       beatOffset: beatOffset,
       cuePoint: cuePoint,
-      hotcues: JSON.parse(JSON.stringify(hotcues)),
       timestamp: Date.now()
     };
     return new Promise(resolve => {
@@ -418,8 +426,7 @@ input[type=range]::-moz-range-thumb{ border:none; }
           beatOffset = data.beatOffset || 0;
           cuePoint = data.cuePoint || 0;
           hotcues = data.hotcues || {A:null, B:null, C:null, D:null};
-          updateHotcueUI();
-          resolve(true);
+                resolve(true);
         } else {
           resolve(false);
         }
@@ -427,19 +434,8 @@ input[type=range]::-moz-range-thumb{ border:none; }
     });
   }
 
-  function updateHotcueUI(){
-    for(const cue of ['A','B','C','D']){
-      const btn = document.querySelector(`.hcue[data-cue="${cue}"]`);
-      if(hotcues[cue]!==null) btn.classList.add('has-cue');
-      else btn.classList.remove('has-cue');
-    }
-  }
-
-  let filterNode = null;      // low-pass of high-pass filter
-  let filterValue = 0;         // -100 (hoog-pass) tot +100 (laag-pass)
   let analyser = null;         // VU-meter
   let currentTrackId = null;   // trackID voor geheugen
-  let hotcues = {A:null, B:null, C:null, D:null}; // huidige track hotcues
 
   let pendingTrackSend = false;
   let engPos = 0, engPosTime = 0; // laatst gerapporteerde positie + tijdstip
@@ -474,6 +470,8 @@ input[type=range]::-moz-range-thumb{ border:none; }
   const emptyHint = $('emptyHint');
   const waveCanvas = $('waveCanvas');
   const wctx = waveCanvas.getContext('2d');
+  const overviewCanvas = $('overviewCanvas');
+  const octx = overviewCanvas.getContext('2d');
   const curTimeEl = $('curTime');
   const totTimeEl = $('totTime');
   const cueHint = $('cueHint');
@@ -638,13 +636,7 @@ registerProcessor('cdj-engine', CDJEngine);
 `;
 
   function initWorklet(){
-    if(!ctx.audioWorklet){
-      workletReady=false;
-      keylockBtn.disabled = true;
-      keylockBtn.style.opacity = 0.4;
-      keylockBtn.title = 'Keylock niet ondersteund op dit toestel (te oude Safari)';
-      return;
-    }
+    if(!ctx.audioWorklet){ workletReady=false; return; }
     const url = URL.createObjectURL(new Blob([CDJ_WORKLET_CODE], {type:'application/javascript'}));
     ctx.audioWorklet.addModule(url).then(()=>{
       workletNode = new AudioWorkletNode(ctx, 'cdj-engine', {
@@ -662,7 +654,6 @@ registerProcessor('cdj-engine', CDJEngine);
       workletReady = false;
       keylockBtn.disabled = true;
       keylockBtn.style.opacity = 0.4;
-      keylockBtn.title = 'Keylock niet ondersteund op dit toestel (te oude Safari)';
     });
   }
 
@@ -687,11 +678,7 @@ registerProcessor('cdj-engine', CDJEngine);
       limiter.threshold.value = -1; limiter.knee.value = 0;
       limiter.ratio.value = 20; limiter.attack.value = 0.002; limiter.release.value = 0.1;
       lowFilter.connect(midFilter); midFilter.connect(highFilter); highFilter.connect(masterGain);
-      filterNode = ctx.createBiquadFilter();
-      filterNode.type = 'lowpass';
-      filterNode.frequency.value = 20000;
-      masterGain.connect(filterNode);
-      filterNode.connect(limiter);
+      masterGain.connect(limiter);
       limiter.connect(ctx.destination);
       analyser = ctx.createAnalyser();
       analyser.fftSize = 256;
@@ -724,7 +711,7 @@ registerProcessor('cdj-engine', CDJEngine);
     }
     currentTrackId = trackHash(file);
     const had = await loadTrackData(currentTrackId);
-    if(!had) bpmDetected = false;
+    if(!had) bpmDetected = false; // nieuwe track: opnieuw analyseren
     loopActive = false; loopBtn.classList.remove('active');
     sendTrackToWorklet();
     stopPlayback();
@@ -733,9 +720,9 @@ registerProcessor('cdj-engine', CDJEngine);
     cueHint.textContent = 'geen cue-punt';
     trackSub.textContent = 'analyseren...';
     emptyHint.style.display = 'none';
-    updateHotcueUI();
     await new Promise(r=>setTimeout(r,30));
-    if(!had) analyzeTrack();
+    const eLowArr = computeWaveformData();
+    if(!had) detectBPM(eLowArr);
     updateBpmReadout();
 
     // VU-meter
@@ -753,7 +740,7 @@ registerProcessor('cdj-engine', CDJEngine);
     drawWave();
   });
 
-  function analyzeTrack(){
+  function computeWaveformData(){
     const ch0 = buffer.getChannelData(0);
     const ch1 = buffer.numberOfChannels>1 ? buffer.getChannelData(1) : null;
     const sr = buffer.sampleRate;
@@ -803,8 +790,7 @@ registerProcessor('cdj-engine', CDJEngine);
       bucketG[b] = Math.round(wL*110 + wM*138 + wH*239);
       bucketB[b] = Math.round(wL*255 + wM*61  + wH*243);
     }
-
-    detectBPM(eLowArr);
+    return eLowArr;
   }
 
   function detectBPM(env){
@@ -1018,19 +1004,6 @@ registerProcessor('cdj-engine', CDJEngine);
   cueBtn.addEventListener('pointerup', cueRelease);
   cueBtn.addEventListener('pointercancel', cueRelease);
 
-  // ---------- Filter (low-pass / high-pass) ----------
-  const filterSlider = $('filterSlider'), filterVal = $('filterVal');
-  filterSlider.addEventListener('input', ()=>{
-    filterValue = parseFloat(filterSlider.value);
-    if(!filterNode) return;
-    const val = Math.abs(filterValue);
-    const freq = 20 + val*val*1.5;
-    filterNode.frequency.value = freq;
-    if(filterValue > 5) filterVal.textContent = 'LP '+Math.round(freq)+'Hz';
-    else if(filterValue < -5) filterVal.textContent = 'HP '+Math.round(freq)+'Hz';
-    else filterVal.textContent = 'OFF';
-  });
-
   // ---------- BPM / tempo ----------
   bpmNum.addEventListener('click', () => {
     const val = prompt('Basis-BPM van deze track:', trackBPM.toFixed(2));
@@ -1180,6 +1153,39 @@ registerProcessor('cdj-engine', CDJEngine);
   waveCanvas.addEventListener('pointerup', endWaveDrag);
   waveCanvas.addEventListener('pointercancel', endWaveDrag);
 
+  // ---------- overzicht-waveform: needle search (werkt ook tijdens playback) ----------
+  let ovDragging = false, ovLastSeek = 0;
+  overviewCanvas.style.touchAction = 'none';
+  function seekFromOverviewEvent(e, throttled){
+    const r = overviewCanvas.getBoundingClientRect();
+    const frac = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+    const target = frac * buffer.duration;
+    if(isPlaying){
+      // tijdens playback: throttlen zodat slepen niet knettert door te veel herstarts
+      const now = performance.now();
+      if(throttled && now - ovLastSeek < 90) return;
+      ovLastSeek = now;
+      startPlayback(target);
+    } else {
+      startOffset = target;
+      curTimeEl.textContent = fmtTime(startOffset);
+      drawWave();
+    }
+  }
+  overviewCanvas.addEventListener('pointerdown', (e)=>{
+    if(!buffer) return;
+    ovDragging = true;
+    try{ overviewCanvas.setPointerCapture(e.pointerId); }catch(err){}
+    seekFromOverviewEvent(e, false);
+  });
+  overviewCanvas.addEventListener('pointermove', (e)=>{
+    if(!ovDragging) return;
+    seekFromOverviewEvent(e, true);
+  });
+  function endOvDrag(){ ovDragging = false; }
+  overviewCanvas.addEventListener('pointerup', endOvDrag);
+  overviewCanvas.addEventListener('pointercancel', endOvDrag);
+
   // ---------- keylock ----------
   const keylockBtn = $('keylockBtn');
   keylockBtn.addEventListener('click', ()=>{
@@ -1317,6 +1323,9 @@ registerProcessor('cdj-engine', CDJEngine);
     const dpr = window.devicePixelRatio||1;
     const w = waveCanvas.clientWidth, h = waveCanvas.clientHeight;
     waveCanvas.width = w*dpr; waveCanvas.height = h*dpr;
+    const ow = overviewCanvas.clientWidth, oh = overviewCanvas.clientHeight;
+    overviewCanvas.width = ow*dpr; overviewCanvas.height = oh*dpr;
+    octx.setTransform(dpr,0,0,dpr,0,0);
     wctx.setTransform(dpr,0,0,dpr,0,0);
   }
   window.addEventListener('resize', resizeCanvas);
@@ -1355,6 +1364,9 @@ registerProcessor('cdj-engine', CDJEngine);
 
   // ---------- PWA: offline cache (alleen actief als de app gehost wordt) ----------
   if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+    // eerste installatie heeft nog geen controller -> alleen ECHTE updates
+    // (waar er al een controller was) mogen straks een reload triggeren
+    const hadControllerAtStart = !!navigator.serviceWorker.controller;
     window.addEventListener('load', ()=>{
       navigator.serviceWorker.register('./sw.js').then(reg=>{
         reg.update();
@@ -1364,35 +1376,86 @@ registerProcessor('cdj-engine', CDJEngine);
         });
       }).catch(()=>{});
       // nieuwe versie actief geworden -> één keer automatisch herladen
+      // (nooit bij de allereerste installatie, anders herlaadt de app zichzelf
+      //  binnen de eerste seconde en kan dat een track-load onderbreken)
       let reloaded = false;
       navigator.serviceWorker.addEventListener('controllerchange', ()=>{
-        if(reloaded) return; reloaded = true;
+        if(reloaded || !hadControllerAtStart) return;
+        reloaded = true;
         if(!isPlaying) location.reload(); // nooit midden in een draaiende track
       });
     });
   }
 
 
-  // ---------- hot cues ----------
-  for(const cue of ['A','B','C','D']){
-    const btn = document.querySelector(`.hcue[data-cue="${cue}"]`);
-    btn.addEventListener('click', ()=>{
-      if(!buffer) return;
-      if(hotcues[cue]===null){
-        hotcues[cue] = currentPosition();
-        btn.classList.add('has-cue');
-        saveTrackData();
-      } else {
-        startPlayback(hotcues[cue]);
-      }
-    });
-  }
-
   resizeCanvas();
+
+  // ---------- diagnose-overlay: 3x tikken op de tracktitel bovenaan ----------
+  (function(){
+    const trigger = document.getElementById('trackTitle');
+    if(!trigger) return;
+    let taps = [];
+    trigger.addEventListener('click', ()=>{
+      const now = Date.now();
+      taps = taps.filter(t=>now-t<900);
+      taps.push(now);
+      if(taps.length < 3) return;
+      taps = [];
+      const safe = (fn, fallback)=>{ try{ return fn(); }catch(e){ return fallback; } };
+      const lines = [
+        'Pocket CDJ diagnose (versie: ' + (document.getElementById('verBadge') ? document.getElementById('verBadge').textContent : '?') + ')',
+        'scherm: ' + window.innerWidth + 'x' + window.innerHeight,
+        'body scrollWidth: ' + document.body.scrollWidth + ' (moet == schermbreedte)',
+        'devicePixelRatio: ' + window.devicePixelRatio,
+        'CSS gap (flex): ' + safe(()=>CSS.supports('gap','10px'), 'onbekend'),
+        'CSS clamp(): ' + safe(()=>CSS.supports('width','clamp(1px,1vw,2px)'), 'onbekend'),
+        'CSS inset: ' + safe(()=>CSS.supports('inset','0'), 'onbekend'),
+        'AudioWorklet: ' + (window.AudioContext ? !!(new (window.AudioContext||window.webkitAudioContext)()).audioWorklet : 'geen AudioContext'),
+        'Service Worker: ' + ('serviceWorker' in navigator),
+        'UA: ' + navigator.userAgent
+      ];
+      const box = document.createElement('div');
+      box.style.cssText = 'position:fixed;top:10px;right:10px;bottom:10px;left:10px;background:#000;color:#0f0;font-family:monospace;font-size:11px;padding:14px;z-index:99999;overflow:auto;border:2px solid #0f0;border-radius:8px;white-space:pre-wrap;';
+      box.textContent = lines.join('\n') + '\n\n(tik om te sluiten)';
+      box.addEventListener('click', ()=> box.remove());
+      document.body.appendChild(box);
+    });
+  })();
+
+  function drawOverview(){
+    const w = overviewCanvas.clientWidth, h = overviewCanvas.clientHeight;
+    octx.clearRect(0,0,w,h);
+    if(!peaksMin || !buffer) return;
+    const mid = h/2;
+    const step = Math.max(1, Math.floor(peaksMin.length / w));
+    for(let x=0; x<w; x++){
+      const bStart = x*step, bEnd = Math.min(peaksMin.length, bStart+step);
+      let mn=1, mx=-1;
+      for(let b=bStart;b<bEnd;b++){ if(peaksMin[b]<mn) mn=peaksMin[b]; if(peaksMax[b]>mx) mx=peaksMax[b]; }
+      if(mx<mn) continue;
+      octx.fillStyle = 'rgba(139,142,153,0.55)';
+      octx.fillRect(x, mid - mx*(mid-2), 1, Math.max(1,(mx-mn)*(mid-2)));
+    }
+    // actieve loop
+    if(loopActive){
+      const x1 = (loopStartT/buffer.duration)*w, x2 = (loopEndT/buffer.duration)*w;
+      octx.fillStyle = 'rgba(47,230,194,0.25)';
+      octx.fillRect(x1, 0, Math.max(1,x2-x1), h);
+    }
+    // cue-punt
+    const cx = (cuePoint/buffer.duration)*w;
+    octx.fillStyle = 'var(--amber)'; octx.fillStyle = '#ff8a3d';
+    octx.fillRect(cx, 0, 2, h);
+    // playhead
+    const px = (currentPosition()/buffer.duration)*w;
+    octx.fillStyle = '#ffffff';
+    octx.fillRect(px-1, 0, 2, h);
+  }
 
   function drawWave(){
     const w = waveCanvas.clientWidth, h = waveCanvas.clientHeight;
     wctx.clearRect(0,0,w,h);
+    drawOverview();
     if(!peaksMin){ return; }
     const pos = currentPosition();
     const visibleSeconds = 6;
