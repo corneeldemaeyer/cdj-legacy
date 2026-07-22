@@ -116,7 +116,7 @@ input[type=range]::-webkit-slider-thumb{
 <body>
 
 <div class="blok">
-  <span class="titel" id="trackTitle">Geen track geladen</span><span class="badge" id="verBadge">v22-simpel</span>
+  <span class="titel" id="trackTitle">Geen track geladen</span><span class="badge" id="verBadge">v23-simpel</span>
   <div class="sub" id="trackSub">tik op laden om te starten</div>
   <label class="btn" for="fileInput">TRACK LADEN (ook USB-opslag)</label>
   <input type="file" id="fileInput">
@@ -526,8 +526,23 @@ registerProcessor('cdj-engine', CDJEngine);
     if(!file) return;
     ensureCtx();
     trackTitle.textContent = file.name;
+    trackSub.textContent = 'bestand lezen... (' + (file.size/1024/1024).toFixed(1) + ' MB)';
+    // waarschuwing specifiek voor het LEZEN (vóór decoderen): als een bestand
+    // in Bestanden nog een iCloud-wolkje heeft (nog niet lokaal gedownload),
+    // kan dit hier onzichtbaar blijven hangen terwijl iOS het ophaalt
+    const readWarnTimer = setTimeout(()=>{
+      trackSub.textContent = 'bestand lezen duurt lang — staat er een iCloud-wolkje bij dit bestand in de Bestanden-app? Tik het bestand daar eerst één keer aan om het lokaal te downloaden, en probeer dan opnieuw.';
+    }, 8000);
+    let arrayBuf;
+    try{
+      arrayBuf = await file.arrayBuffer();
+    }catch(err){
+      clearTimeout(readWarnTimer);
+      trackSub.textContent = 'kon bestand niet lezen: ' + (err && err.message ? err.message : err);
+      return;
+    }
+    clearTimeout(readWarnTimer);
     trackSub.textContent = 'decoderen... (' + (file.size/1024/1024).toFixed(1) + ' MB)';
-    const arrayBuf = await file.arrayBuffer();
     // toon een waarschuwing als decoderen langer dan 6s duurt — op oude,
     // geheugen-arme toestellen (bv. iPhone 5, 1GB RAM) kan dit echt lang duren
     const slowWarnTimer = setTimeout(()=>{
@@ -1358,6 +1373,18 @@ registerProcessor('cdj-engine', CDJEngine);
       wctx.fillStyle = 'rgb('+bucketR[bIdx]+','+bucketG[bIdx]+','+bucketB[bIdx]+')';
       wctx.fillRect(x, y1, Math.max(1,pxPerBucket-0.5), Math.max(1,y2-y1));
     }
+
+    // afspeel-lijn: felle streep precies in het midden, waar "nu" is —
+    // getekend op het canvas zelf, dus geen los element dat kan verschuiven
+    wctx.fillStyle = '#ff8a3d';
+    wctx.fillRect(w/2 - 1, 0, 2, h);
+    wctx.fillStyle = 'rgba(255,138,61,0.9)';
+    wctx.beginPath();
+    wctx.moveTo(w/2 - 5, 0);
+    wctx.lineTo(w/2 + 5, 0);
+    wctx.lineTo(w/2, 8);
+    wctx.closePath();
+    wctx.fill();
   }
 
   // ---------- main loop ----------
