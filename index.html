@@ -125,46 +125,23 @@ body{
 }
 .jog-area > * + *{ margin-left:8px; }
 .nudge-btn{
-  width:36px; height:84px; border-radius:10px; flex-shrink:0; /* veilige vaste maat, ook op oude Safari */
+  width:34px; height:80px; border-radius:10px; flex-shrink:0; /* vaste maat, werkt op elke browser */
   background:var(--panel-3); border:1px solid var(--line); color:var(--text-dim);
   font-size:18px; display:flex; align-items:center; justify-content:center;
   user-select:none; cursor:pointer;
 }
-@supports (width:clamp(1px,1vw,2px)){
-  .nudge-btn{ width:clamp(32px,9vw,44px); height:clamp(76px,24vw,96px); }
-}
 .nudge-btn:active, .nudge-btn.pressed{ background:var(--teal-dim); border-color:var(--teal); color:var(--teal); }
 
 .jog{
-  position:relative; width:150px; height:150px; border-radius:50%; flex-shrink:0; /* veilige vaste maat */
-  background:
-    radial-gradient(circle at 50% 42%, #33363f 0%, #23252c 55%, #191a1f 100%);
-  border:1px solid var(--line);
-  box-shadow: inset 0 0 0 8px #14151a, inset 0 0 30px rgba(0,0,0,.6), 0 6px 18px rgba(0,0,0,.5);
+  width:160px; height:160px; border-radius:50%; flex-shrink:0; /* vaste maat, geen enkel kind-element met eigen positie */
+  background:#23252c;
+  border:2px solid var(--line);
+  display:flex; align-items:center; justify-content:center;
   touch-action:none; cursor:grab;
 }
-.jog-ring{
-  position:absolute; top:8px; right:8px; bottom:8px; left:8px; border-radius:50%;
-  border:1px dashed #40434f;
-}
-@supports (width:clamp(1px,1vw,2px)){
-  .jog{ width:clamp(140px,46vw,190px); height:clamp(140px,46vw,190px); }
-}
-.jog-marker{
-  position:absolute; top:7%; left:50%; width:3px; height:14%;
-  background:var(--teal); border-radius:2px; transform-origin:50% 350%;
-  box-shadow:0 0 6px var(--teal);
-}
-.jog-center{
-  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-  width:34%; height:34%; border-radius:50%;
-  background:var(--panel); border:1px solid var(--line);
-  display:flex; align-items:center; justify-content:center;
-  flex-direction:column; pointer-events:none;
-}
-.jog-center .lbl{ font-size:9px; letter-spacing:2px; color:var(--text-dim); font-weight:700; }
-.jog.playing .jog-center{ border-color:var(--amber); }
-.jog.playing .jog-ring{ border-color:var(--amber); opacity:.6; }
+.jog .lbl{ font-size:11px; letter-spacing:2px; color:var(--text-dim); font-weight:700; }
+.jog.playing{ border-color:var(--amber); }
+.jog.playing .lbl{ color:var(--amber); }
 
 /* ---------- TRANSPORT ---------- */
 .transport{
@@ -219,26 +196,23 @@ body{
 }
 
 /* ---------- EQ ---------- */
-.eq-row{ display:flex; justify-content:space-around; align-items:flex-end; padding-top:4px;}
-.eq-band{ display:flex; flex-direction:column; align-items:center; }
-.eq-band > * + *{ margin-top:8px; }
-.eq-val{ font-size:11px; color:var(--text-dim); width:44px; text-align:center; }
-/* verticale sliders: iOS Safari kent geen slider-vertical/writing-mode op range,
-   dus we roteren een horizontale slider — werkt overal */
-.eq-slider-wrap{ height:130px; width:36px; display:flex; align-items:center; justify-content:center; }
+.eq-row{ display:flex; flex-direction:column; }
+.eq-row > * + *{ margin-top:14px; }
+.eq-band{ display:flex; align-items:center; }
+.eq-band > * + *{ margin-left:10px; }
+.eq-val{ font-size:11px; color:var(--text-dim); width:44px; text-align:right; flex-shrink:0; }
 .eq-slider{
   -webkit-appearance:none; appearance:none;
-  width:120px; height:6px; border-radius:3px; background:var(--panel-3); outline:none;
-  transform:rotate(-90deg); transform-origin:center;
+  flex:1; height:6px; border-radius:3px; background:var(--panel-3); outline:none;
   touch-action:none;
 }
 .eq-slider::-webkit-slider-thumb{
-  -webkit-appearance:none; width:24px; height:14px; border-radius:4px; cursor:pointer;
+  -webkit-appearance:none; width:22px; height:22px; border-radius:50%; cursor:pointer;
 }
 .eq-band[data-band="low"] .eq-slider::-webkit-slider-thumb{ background:var(--amber); }
 .eq-band[data-band="mid"] .eq-slider::-webkit-slider-thumb{ background:#d7dae2; }
 .eq-band[data-band="high"] .eq-slider::-webkit-slider-thumb{ background:var(--teal); }
-.eq-label{ font-size:10px; letter-spacing:1.5px; font-weight:700; color:var(--text-dim); }
+.eq-label{ font-size:10px; letter-spacing:1.5px; font-weight:700; color:var(--text-dim); width:36px; flex-shrink:0; }
 
 .master-row{ display:flex; align-items:center; margin-top:16px; }
 .master-row > * + *{ margin-left:12px; }
@@ -298,7 +272,7 @@ input[type=range]::-moz-range-thumb{ border:none; }
     <div class="bpm-readout">
       <span class="bpm-num mono" id="bpmNum">120.00</span>
       <span class="bpm-label">BPM</span>
-      <span class="ver-badge" id="verBadge">v16</span>
+      <span class="ver-badge" id="verBadge">v18</span>
     </div>
     <div class="range-toggle" id="rangeToggle">
       <button class="range-btn" data-range="8">±8%</button>
@@ -309,11 +283,7 @@ input[type=range]::-moz-range-thumb{ border:none; }
 
   <div class="jog-area">
     <div class="nudge-btn" id="nudgeLeft">−</div>
-    <div class="jog" id="jog">
-      <div class="jog-ring"></div>
-      <div class="jog-marker" id="jogMarker"></div>
-      <div class="jog-center"><div class="lbl">JOG</div></div>
-    </div>
+    <div class="jog" id="jog"><div class="lbl" id="jogLbl">JOG</div></div>
     <div class="nudge-btn" id="nudgeRight">+</div>
   </div>
 
@@ -345,19 +315,19 @@ input[type=range]::-moz-range-thumb{ border:none; }
     <div class="section-head"><span class="t">EQ (3-BAND)</span><span class="v mono" id="eqSummary"></span></div>
     <div class="eq-row">
       <div class="eq-band" data-band="low">
-        <div class="eq-val mono" id="lowVal">0 dB</div>
-        <div class="eq-slider-wrap"><input type="range" class="eq-slider" id="lowSlider" min="-24" max="12" step="1" value="0"></div>
         <div class="eq-label">LOW</div>
+        <input type="range" class="eq-slider" id="lowSlider" min="-24" max="12" step="1" value="0">
+        <div class="eq-val mono" id="lowVal">0 dB</div>
       </div>
       <div class="eq-band" data-band="mid">
-        <div class="eq-val mono" id="midVal">0 dB</div>
-        <div class="eq-slider-wrap"><input type="range" class="eq-slider" id="midSlider" min="-24" max="12" step="1" value="0"></div>
         <div class="eq-label">MID</div>
+        <input type="range" class="eq-slider" id="midSlider" min="-24" max="12" step="1" value="0">
+        <div class="eq-val mono" id="midVal">0 dB</div>
       </div>
       <div class="eq-band" data-band="high">
-        <div class="eq-val mono" id="highVal">0 dB</div>
-        <div class="eq-slider-wrap"><input type="range" class="eq-slider" id="highSlider" min="-24" max="12" step="1" value="0"></div>
         <div class="eq-label">HIGH</div>
+        <input type="range" class="eq-slider" id="highSlider" min="-24" max="12" step="1" value="0">
+        <div class="eq-val mono" id="highVal">0 dB</div>
       </div>
     </div>
     <div class="master-row">
@@ -478,7 +448,6 @@ input[type=range]::-moz-range-thumb{ border:none; }
   const bpmNum = $('bpmNum');
   const rangeToggle = $('rangeToggle');
   const jogEl = $('jog');
-  const jogMarker = $('jogMarker');
   const nudgeLeft = $('nudgeLeft');
   const nudgeRight = $('nudgeRight');
   const playBtn = $('playBtn');
@@ -1537,12 +1506,12 @@ registerProcessor('cdj-engine', CDJEngine);
       if(fill) fill.style.width = pct+'%';
     }
 
-    // jog visual auto-rotation while playing (independent of drag delta already applied)
+    // jog visual auto-rotation while playing (bijgehouden voor eventueel later gebruik,
+    // maar er is geen roterend element meer om te tonen op deze vereenvoudigde build)
     if(isPlaying && !dragging){
       const bpmNowVal = trackBPM*currentEffectiveRate();
-      jogRotation += (bpmNowVal/60)*180*dt; // half rotation per beat, purely visual
+      jogRotation += (bpmNowVal/60)*180*dt;
     }
-    jogMarker.style.transform = 'rotate('+jogRotation+'deg)';
 
     if(buffer){
       loopWatchdog();
