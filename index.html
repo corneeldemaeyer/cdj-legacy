@@ -56,7 +56,7 @@ body{
 /* ---------- HEADER ---------- */
 .topbar{
   display:flex; align-items:center; justify-content:space-between;
-  padding:14px 16px 10px;
+  padding:10px 14px 8px;
   border-bottom:1px solid var(--line);
 }
 .brand{
@@ -81,8 +81,8 @@ body{
   position:relative; padding:10px 0 4px; border-bottom:1px solid var(--line);
   background:linear-gradient(180deg,#141519,#181A20);
 }
-#waveCanvas{ display:block; width:100%; height:110px; }
-.overview-wave{ display:block; width:100%; height:34px; touch-action:none; border-top:1px solid var(--line); }
+#waveCanvas{ display:block; width:100%; height:88px; }
+.overview-wave{ display:block; width:100%; height:26px; touch-action:none; border-top:1px solid var(--line); }
 .playhead-line{
   position:absolute; top:6px; bottom:22px; left:50%; width:2px;
   background:var(--amber); box-shadow:0 0 8px var(--amber);
@@ -101,11 +101,11 @@ body{
 /* ---------- BPM READOUT ---------- */
 .bpm-row{
   display:flex; align-items:center; justify-content:space-between;
-  padding:14px 16px 6px;
+  padding:10px 14px 6px;
 }
 .bpm-readout{ display:flex; align-items:baseline; }
 .bpm-readout > * + *{ margin-left:6px; }
-.bpm-num{ font-size:36px; font-weight:700; color:var(--teal); letter-spacing:1px; line-height:1; }
+.bpm-num{ font-size:28px; font-weight:700; color:var(--teal); letter-spacing:0.5px; line-height:1; }
 .bpm-label{ font-size:11px; color:var(--text-dim); letter-spacing:2px; font-weight:600; }
 .range-toggle{ display:flex; }
 .range-toggle > * + *{ margin-left:4px; }
@@ -121,38 +121,38 @@ body{
 /* ---------- JOG ---------- */
 .jog-area{
   display:flex; align-items:center; justify-content:center;
-  padding:8px 6px 14px;
+  padding:6px 6px 10px;
 }
-.jog-area > * + *{ margin-left:8px; }
+.jog-area > * + *{ margin-left:6px; }
 .nudge-btn{
-  width:34px; height:80px; border-radius:10px; flex-shrink:0; /* vaste maat, werkt op elke browser */
+  width:28px; height:60px; border-radius:8px; flex-shrink:0; /* vaste maat, werkt op elke browser */
   background:var(--panel-3); border:1px solid var(--line); color:var(--text-dim);
-  font-size:18px; display:flex; align-items:center; justify-content:center;
+  font-size:15px; display:flex; align-items:center; justify-content:center;
   user-select:none; cursor:pointer;
 }
 .nudge-btn:active, .nudge-btn.pressed{ background:var(--teal-dim); border-color:var(--teal); color:var(--teal); }
 
 .jog{
-  width:160px; height:160px; border-radius:50%; flex-shrink:0; /* vaste maat, geen enkel kind-element met eigen positie */
+  width:110px; height:110px; border-radius:50%; flex-shrink:0; /* vaste maat, geen enkel kind-element met eigen positie */
   background:#23252c;
   border:2px solid var(--line);
   display:flex; align-items:center; justify-content:center;
   touch-action:none; cursor:grab;
 }
-.jog .lbl{ font-size:11px; letter-spacing:2px; color:var(--text-dim); font-weight:700; }
+.jog .lbl{ font-size:9px; letter-spacing:1.5px; color:var(--text-dim); font-weight:700; }
 .jog.playing{ border-color:var(--amber); }
 .jog.playing .lbl{ color:var(--amber); }
 
 /* ---------- TRANSPORT ---------- */
 .transport{
   display:flex; align-items:center; justify-content:center;
-  padding:6px 16px 18px;
+  padding:4px 14px 12px;
 }
 .loop-row{ display:flex; padding:10px 16px 0; }
 .loop-row > * + *{ margin-left:8px; }
 .lbtn{
-  border:none; border-radius:8px; font-family:'Inter',sans-serif; font-weight:700;
-  font-size:11px; letter-spacing:1px; cursor:pointer; padding:11px 0;
+  border:none; border-radius:7px; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:10px; letter-spacing:0.5px; cursor:pointer; padding:8px 0;
   background:var(--panel-3); color:var(--text); border:1px solid var(--line);
   flex:1; touch-action:manipulation;
 }
@@ -161,18 +161,18 @@ body{
 .lbtn.tap:active{ background:var(--amber); color:#221304; }
 .ver-badge{ font-size:9px; color:var(--text-dim); border:1px solid var(--line); border-radius:4px; padding:1px 5px; margin-left:6px; }
 .tbtn{
-  border:none; border-radius:8px; font-family:'Inter',sans-serif; font-weight:700;
-  font-size:12px; letter-spacing:1px; cursor:pointer; padding:14px 22px;
+  border:none; border-radius:7px; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:11px; letter-spacing:0.5px; cursor:pointer; padding:11px 16px;
   display:flex; align-items:center;
 }
 .tbtn > * + *{ margin-left:8px; }
 .tbtn.cue{ background:var(--panel-3); color:var(--text); border:1px solid var(--line); }
 .tbtn.cue:active{ background:var(--red-dim); border-color:var(--red); color:var(--red); }
-.tbtn.play{ background:var(--amber); color:#1a1204; min-width:150px; justify-content:center; }
+.tbtn.play{ background:var(--amber); color:#1a1204; min-width:110px; justify-content:center; }
 .tbtn.play.is-playing{ background:var(--panel-3); color:var(--amber); border:1px solid var(--amber); }
 
 /* ---------- TEMPO ---------- */
-.section{ padding:14px 16px; border-top:1px solid var(--line); }
+.section{ padding:10px 14px; border-top:1px solid var(--line); }
 .section-head{
   display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px;
 }
@@ -192,12 +192,12 @@ body{
 .tempo-reset{
   margin-top:8px; width:100%; background:var(--panel-3); border:1px solid var(--line);
   color:var(--text-dim); font-size:10px; letter-spacing:1px; font-weight:700;
-  padding:7px; border-radius:5px; cursor:pointer;
+  padding:5px 6px; border-radius:5px; cursor:pointer; font-size:10px;
 }
 
 /* ---------- EQ ---------- */
 .eq-row{ display:flex; flex-direction:column; }
-.eq-row > * + *{ margin-top:14px; }
+.eq-row > * + *{ margin-top:10px; }
 .eq-band{ display:flex; align-items:center; }
 .eq-band > * + *{ margin-left:10px; }
 .eq-val{ font-size:11px; color:var(--text-dim); width:44px; text-align:right; flex-shrink:0; }
@@ -214,7 +214,7 @@ body{
 .eq-band[data-band="high"] .eq-slider::-webkit-slider-thumb{ background:var(--teal); }
 .eq-label{ font-size:10px; letter-spacing:1.5px; font-weight:700; color:var(--text-dim); width:36px; flex-shrink:0; }
 
-.master-row{ display:flex; align-items:center; margin-top:16px; }
+.master-row{ display:flex; align-items:center; margin-top:12px; }
 .master-row > * + *{ margin-left:12px; }
 .master-row .lbl{ font-size:10px; letter-spacing:1.5px; font-weight:700; color:var(--text-dim); width:52px;}
 .master-slider{ -webkit-appearance:none; flex:1; height:4px; border-radius:2px; background:var(--panel-3); outline:none;}
@@ -272,7 +272,7 @@ input[type=range]::-moz-range-thumb{ border:none; }
     <div class="bpm-readout">
       <span class="bpm-num mono" id="bpmNum">120.00</span>
       <span class="bpm-label">BPM</span>
-      <span class="ver-badge" id="verBadge">v18</span>
+      <span class="ver-badge" id="verBadge">v19</span>
     </div>
     <div class="range-toggle" id="rangeToggle">
       <button class="range-btn" data-range="8">±8%</button>
@@ -343,6 +343,20 @@ input[type=range]::-moz-range-thumb{ border:none; }
 </div>
 
 <script>
+// Vangnet: elke onverwachte fout ergens in de app wordt zichtbaar getoond
+// bovenaan het scherm, in plaats van dat de app stil vastloopt zonder uitleg.
+window.addEventListener('error', function(e){
+  try{
+    let box = document.getElementById('fatalErrBox');
+    if(!box){
+      box = document.createElement('div');
+      box.id = 'fatalErrBox';
+      box.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#4a1010;color:#ff8a8a;font-family:monospace;font-size:11px;padding:8px 10px;z-index:99998;white-space:pre-wrap;border-bottom:2px solid #ff4757;';
+      document.body.insertBefore(box, document.body.firstChild);
+    }
+    box.textContent = 'JS-fout: ' + e.message + ' (regel ' + e.lineno + ')';
+  }catch(err){}
+});
 (() => {
   // ---------- state ----------
   let ctx = null;
@@ -679,10 +693,11 @@ registerProcessor('cdj-engine', CDJEngine);
       return;
     }
     currentTrackId = trackHash(file);
-    const had = await loadTrackData(currentTrackId);
+    let had = false;
+    try{ had = await loadTrackData(currentTrackId); }catch(err){ had = false; }
     if(!had) bpmDetected = false; // nieuwe track: opnieuw analyseren
     loopActive = false; loopBtn.classList.remove('active');
-    sendTrackToWorklet();
+    try{ sendTrackToWorklet(); }catch(err){ /* worklet niet beschikbaar: buffer-engine vangt dit op */ }
     stopPlayback();
     startOffset = 0; cuePoint = 0;
     totTimeEl.textContent = fmtTime(buffer.duration);
@@ -690,23 +705,22 @@ registerProcessor('cdj-engine', CDJEngine);
     trackSub.textContent = 'analyseren...';
     emptyHint.style.display = 'none';
     await new Promise(r=>setTimeout(r,30));
-    const eLowArr = computeWaveformData();
-    if(!had) detectBPM(eLowArr);
+    try{
+      const eLowArr = computeWaveformData();
+      if(!had) detectBPM(eLowArr);
+    }catch(err){
+      trackSub.textContent = 'FOUT bij analyseren: ' + (err && err.message ? err.message : err);
+      return;
+    }
     updateBpmReadout();
 
-    // VU-meter
-    if(analyser && isPlaying){
-      const arr = new Uint8Array(analyser.frequencyBinCount);
-      analyser.getByteFrequencyData(arr);
-      let mx = 0;
-      for(let i=0;i<arr.length;i++) if(arr[i]>mx) mx=arr[i];
-      const pct = (mx/255)*100;
-      const fill = document.getElementById('vuFill');
-      if(fill) fill.style.width = pct+'%';
-    }
     trackSub.textContent = buffer.duration.toFixed(1)+'s · '+buffer.sampleRate+'Hz · '
       + (bpmDetected ? trackBPM.toFixed(1)+' BPM' : 'BPM — tik om in te stellen');
-    drawWave();
+    try{
+      drawWave();
+    }catch(err){
+      trackSub.textContent += ' (waveform-fout: ' + (err && err.message ? err.message : err) + ')';
+    }
   });
 
   function computeWaveformData(){
@@ -1289,13 +1303,17 @@ registerProcessor('cdj-engine', CDJEngine);
 
   // ---------- waveform drawing ----------
   function resizeCanvas(){
-    const dpr = window.devicePixelRatio||1;
-    const w = waveCanvas.clientWidth, h = waveCanvas.clientHeight;
-    waveCanvas.width = w*dpr; waveCanvas.height = h*dpr;
-    const ow = overviewCanvas.clientWidth, oh = overviewCanvas.clientHeight;
-    overviewCanvas.width = ow*dpr; overviewCanvas.height = oh*dpr;
-    octx.setTransform(dpr,0,0,dpr,0,0);
-    wctx.setTransform(dpr,0,0,dpr,0,0);
+    try{
+      const dpr = window.devicePixelRatio||1;
+      const w = waveCanvas.clientWidth, h = waveCanvas.clientHeight;
+      waveCanvas.width = w*dpr; waveCanvas.height = h*dpr;
+      const ow = overviewCanvas.clientWidth, oh = overviewCanvas.clientHeight;
+      overviewCanvas.width = ow*dpr; overviewCanvas.height = oh*dpr;
+      octx.setTransform(dpr,0,0,dpr,0,0);
+      wctx.setTransform(dpr,0,0,dpr,0,0);
+    }catch(err){
+      if(trackSub) trackSub.textContent = 'FOUT bij canvas-resize: ' + (err && err.message ? err.message : err);
+    }
   }
   window.addEventListener('resize', resizeCanvas);
   // ---------- iOS audio unlock ----------
@@ -1475,6 +1493,16 @@ registerProcessor('cdj-engine', CDJEngine);
   // ---------- main loop ----------
   let lastFrame = performance.now();
   function loop(now){
+    try{
+      loopBody(now);
+    }catch(err){
+      // een fout in de tekenloop mag de app nooit volledig laten vastlopen —
+      // toon 'm zichtbaar zodat we op afstand kunnen debuggen
+      if(trackSub) trackSub.textContent = 'FOUT in tekenloop: ' + (err && err.message ? err.message : err);
+    }
+    requestAnimationFrame(loop);
+  }
+  function loopBody(now){
     const dt = (now-lastFrame)/1000;
     lastFrame = now;
 
@@ -1520,8 +1548,6 @@ registerProcessor('cdj-engine', CDJEngine);
       drawWave();
       if(isPlaying && !loopActive && pos>=buffer.duration){ stopPlayback(); startOffset=buffer.duration; }
     }
-
-    requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);
 
