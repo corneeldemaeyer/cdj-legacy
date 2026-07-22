@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -10,336 +10,176 @@
 <meta name="theme-color" content="#0d0f13">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./icon-180.png">
-<title>DECK ONE</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>DECK ONE — simpel</title>
 <style>
-:root{
-  --black:#0F1013;
-  --panel:#1B1D23;
-  --panel-2:#242630;
-  --panel-3:#2E313D;
-  --line:#3A3D48;
-  --text:#EDEFF3;
-  --text-dim:#8B8E99;
-  --amber:#FF8A3D;
-  --amber-dim:#5A3E24;
-  --teal:#2FE6C2;
-  --teal-dim:#1B4A44;
-  --red:#FF4757;
-  --red-dim:#4A2029;
-  font-size:16px;
+/* ============================================================
+   MINIMALE CSS — GEEN flexbox, GEEN grid, GEEN transform,
+   GEEN custom properties, GEEN clamp/gap/inset.
+   Alleen: display:block (standaard), display:inline-block,
+   margin, padding, border — technieken die letterlijk sinds
+   de vroegste browsers identiek werken. Dit kan niet stuk.
+   ============================================================ */
+*{ box-sizing:border-box; margin:0; padding:0; }
+html, body{
+  background:#0f1013; color:#edeff3;
+  font-family:Helvetica, Arial, sans-serif;
+  width:100%;
 }
-*{box-sizing:border-box;}
-html,body{
-  margin:0; padding:0; background:var(--black); color:var(--text);
-  font-family:'Inter',sans-serif; -webkit-tap-highlight-color:transparent;
-  overscroll-behavior:none; height:100%; width:100%;
-  touch-action:manipulation;
-}
-body{
-  display:flex; justify-content:center;
-  min-height:100vh;
-  background:
-    radial-gradient(ellipse at 50% -10%, #1a1c22 0%, var(--black) 55%);
-}
-.mono{ font-family:'JetBrains Mono',monospace; }
+body{ padding-bottom:40px; }
 
-.deck{
-  width:100%; max-width:480px; min-height:100vh;
-  display:flex; flex-direction:column;
-  background:var(--panel);
-  border-left:1px solid var(--line); border-right:1px solid var(--line);
-  padding-bottom:env(safe-area-inset-bottom);
-}
+.blok{ padding:12px; border-bottom:1px solid #3a3d48; }
+.label{ font-size:11px; letter-spacing:1px; color:#8b8e99; font-weight:bold; text-transform:uppercase; margin-bottom:6px; }
+.titel{ font-size:16px; font-weight:bold; color:#fff; }
+.sub{ font-size:12px; color:#8b8e99; margin-top:2px; }
 
-/* ---------- HEADER ---------- */
-.topbar{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:14px 16px 10px;
-  border-bottom:1px solid var(--line);
+/* ---- badge (altijd zichtbaar, klein) ---- */
+.badge{ display:inline-block; font-size:10px; color:#8b8e99; border:1px solid #3a3d48; padding:2px 5px; margin-left:6px; }
+
+/* ---- knoppen: gewoon blokken, volle breedte, onder elkaar ---- */
+.btn{
+  display:block; width:100%; text-align:center;
+  background:#2e313d; color:#edeff3; border:1px solid #3a3d48;
+  font-size:14px; font-weight:bold; padding:14px 8px; margin-top:8px;
+  text-decoration:none; cursor:pointer;
 }
-.brand{
-  font-size:11px; letter-spacing:3px; font-weight:800; color:var(--text-dim);
+.btn:first-child{ margin-top:0; }
+.btn-play{ background:#ff8a3d; color:#1a1204; border-color:#ff8a3d; }
+.btn-play.playing{ background:#241a10; color:#ff8a3d; }
+.btn-amber-outline{ border-color:#ff8a3d; color:#ff8a3d; }
+.btn-teal-outline{ border-color:#2fe6c2; color:#2fe6c2; }
+
+/* ---- halve-breedte knoppen: inline-block, 2 per rij ---- */
+.btn-half{
+  display:inline-block; width:48%; text-align:center; vertical-align:top;
+  background:#2e313d; color:#edeff3; border:1px solid #3a3d48;
+  font-size:13px; font-weight:bold; padding:12px 4px; cursor:pointer;
 }
-.brand span{ color:var(--amber); }
-.track-title{
-  font-size:13px; color:var(--text); font-weight:600;
-  max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+.btn-half.r{ margin-left:4%; }
+
+/* ---- kwart-breedte knoppen: 4 per rij (loop-rij) ---- */
+.btn-quart{
+  display:inline-block; width:22%; text-align:center; vertical-align:top;
+  background:#2e313d; color:#edeff3; border:1px solid #3a3d48;
+  font-size:10px; font-weight:bold; padding:10px 1px; cursor:pointer;
+  margin-left:2.3%;
 }
-.track-sub{ font-size:10px; color:var(--text-dim); margin-top:2px; letter-spacing:.5px;}
-.load-btn{
-  background:var(--panel-3); color:var(--text); border:1px solid var(--line);
-  font-family:'Inter',sans-serif; font-weight:700; font-size:11px; letter-spacing:1px;
-  padding:9px 12px; border-radius:6px; cursor:pointer; white-space:nowrap;
+.btn-quart:first-child{ margin-left:0; }
+
+/* ---- waveform ---- */
+#waveCanvas{ display:block; width:100%; height:80px; background:#000; }
+#overviewCanvas{ display:block; width:100%; height:24px; background:#000; border-top:1px solid #3a3d48; margin-top:4px; }
+.leeg-hint{ font-size:12px; color:#8b8e99; text-align:center; padding:30px 10px; }
+
+/* ---- tijden ---- */
+.tijdrij{ font-size:11px; color:#8b8e99; }
+.tijdrij span{ display:inline-block; }
+.tijd-links{ }
+.tijd-rechts{ float:right; }
+.tijd-midden{ display:block; text-align:center; }
+
+/* ---- BPM ---- */
+.bpm-groot{ font-size:32px; font-weight:bold; color:#2fe6c2; }
+.bpm-label{ font-size:11px; color:#8b8e99; }
+
+/* ---- sliders: gewone volle-breedte range-inputs, GEEN rotatie ---- */
+input[type=range]{
+  -webkit-appearance:none; appearance:none;
+  display:block; width:100%; height:6px; border-radius:3px;
+  background:#2e313d; outline:none; margin:10px 0;
 }
-.load-btn:active{ background:var(--amber-dim); border-color:var(--amber); }
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; width:26px; height:26px; border-radius:50%;
+  background:#ff8a3d; cursor:pointer;
+}
+.eq-rij{ margin-top:14px; }
+.eq-rij:first-child{ margin-top:0; }
+.eq-waarde{ font-size:11px; color:#8b8e99; }
+.eq-waarde .r{ float:right; }
+
+.schaal{ font-size:10px; color:#8b8e99; }
+.schaal .r{ float:right; }
+
 #fileInput{ display:none; }
 
-/* ---------- WAVEFORM ---------- */
-.wave-wrap{
-  position:relative; padding:10px 0 4px; border-bottom:1px solid var(--line);
-  background:linear-gradient(180deg,#141519,#181A20);
-}
-#waveCanvas{ display:block; width:100%; height:100px; }
-.overview-wave{ display:block; width:100%; height:26px; touch-action:none; border-top:1px solid var(--line); }
-.playhead-line{
-  position:absolute; top:6px; bottom:22px; left:50%; width:2px;
-  background:var(--amber); box-shadow:0 0 8px var(--amber);
-  transform:translateX(-1px); pointer-events:none;
-}
-.time-row{
-  display:flex; justify-content:space-between; padding:2px 14px 6px;
-  font-size:11px; color:var(--text-dim);
-}
-.time-row .mono{ color:var(--text); }
-.empty-hint{
-  position:absolute; top:0; right:0; bottom:0; left:0; display:flex; align-items:center; justify-content:center;
-  font-size:11px; color:var(--text-dim); letter-spacing:.5px; pointer-events:none;
-}
+.foutbox{ background:#4a1010; color:#ff8a8a; font-size:11px; padding:8px 10px; white-space:pre-wrap; }
+.mono{ font-family:'Courier New', monospace; }
 
-/* ---------- BPM READOUT ---------- */
-.bpm-row{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:14px 16px 8px;
-}
-.bpm-readout{ display:flex; align-items:baseline; }
-.bpm-readout > * + *{ margin-left:6px; }
-.bpm-num{ font-size:38px; font-weight:700; color:var(--teal); letter-spacing:0.5px; line-height:1; }
-.bpm-label{ font-size:11px; color:var(--text-dim); letter-spacing:2px; font-weight:600; }
-.range-toggle{ display:flex; }
-.range-toggle > * + *{ margin-left:4px; }
-.range-btn{
-  background:var(--panel-3); border:1px solid var(--line); color:var(--text-dim);
-  font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700;
-  padding:7px 9px; border-radius:5px; cursor:pointer;
-}
-.tempo-hdr{ display:flex; align-items:center; }
-.tempo-hdr > * + *{ margin-left:10px; }
-.range-btn.active{ background:var(--amber-dim); border-color:var(--amber); color:var(--amber); }
-
-/* ---------- JOG ---------- */
-.jog-area{
-  display:flex; align-items:center; justify-content:center;
-  padding:8px 10px 14px;
-}
-.jog-area > * + *{ margin-left:14px; }
-.nudge-btn{
-  width:44px; height:100px; border-radius:10px; flex-shrink:0; /* vaste maat, werkt op elke browser */
-  background:var(--panel-3); border:1px solid var(--line); color:var(--text-dim);
-  font-size:20px; display:flex; align-items:center; justify-content:center;
-  user-select:none; cursor:pointer;
-}
-.nudge-btn:active, .nudge-btn.pressed{ background:var(--teal-dim); border-color:var(--teal); color:var(--teal); }
-
-.jog{
-  width:170px; height:170px; border-radius:50%; flex-shrink:0; /* vaste maat, geen enkel kind-element met eigen positie */
-  background:#23252c;
-  border:2px solid var(--line);
-  display:flex; align-items:center; justify-content:center;
-  touch-action:none; cursor:grab;
-}
-.jog .lbl{ font-size:12px; letter-spacing:2px; color:var(--text-dim); font-weight:700; }
-.jog.playing{ border-color:var(--amber); }
-.jog.playing .lbl{ color:var(--amber); }
-
-/* ---------- TRANSPORT ---------- */
-.transport{
-  display:flex; align-items:center; justify-content:center;
-  padding:6px 16px 16px;
-}
-.loop-row{ display:flex; padding:10px 16px 0; }
-.loop-row > * + *{ margin-left:8px; }
-.lbtn{
-  border:none; border-radius:8px; font-family:'Inter',sans-serif; font-weight:700;
-  font-size:12px; letter-spacing:0.5px; cursor:pointer; padding:13px 0;
-  background:var(--panel-3); color:var(--text); border:1px solid var(--line);
-  flex:1; touch-action:manipulation;
-}
-.lbtn.wide{ flex:2; }
-.lbtn.active{ background:var(--teal); color:#08221c; border-color:var(--teal); }
-.lbtn.tap:active{ background:var(--amber); color:#221304; }
-.ver-badge{ font-size:9px; color:var(--text-dim); border:1px solid var(--line); border-radius:4px; padding:1px 5px; margin-left:6px; }
-.tbtn{
-  border:none; border-radius:9px; font-family:'Inter',sans-serif; font-weight:700;
-  font-size:14px; letter-spacing:0.5px; cursor:pointer; padding:16px 22px;
-  display:flex; align-items:center;
-}
-.tbtn > * + *{ margin-left:8px; }
-.tbtn.cue{ background:var(--panel-3); color:var(--text); border:1px solid var(--line); }
-.tbtn.cue:active{ background:var(--red-dim); border-color:var(--red); color:var(--red); }
-.tbtn.play{ background:var(--amber); color:#1a1204; min-width:150px; justify-content:center; }
-.tbtn.play.is-playing{ background:var(--panel-3); color:var(--amber); border:1px solid var(--amber); }
-
-/* ---------- TEMPO ---------- */
-.section{ padding:10px 14px; border-top:1px solid var(--line); }
-.section-head{
-  display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px;
-}
-.section-head .t{ font-size:11px; letter-spacing:2px; font-weight:700; color:var(--text-dim); }
-.section-head .v{ font-size:13px; color:var(--teal); }
-.tempo-slider{
-  -webkit-appearance:none; width:100%; height:6px; border-radius:3px;
-  background:linear-gradient(90deg, var(--panel-3), var(--line), var(--panel-3));
-  outline:none;
-}
-.tempo-slider::-webkit-slider-thumb{
-  -webkit-appearance:none; width:26px; height:26px; border-radius:50%;
-  background:var(--amber); border:3px solid #1a1204; cursor:pointer;
-  box-shadow:0 0 8px rgba(255,138,61,.6);
-}
-.tempo-scale{ display:flex; justify-content:space-between; font-size:9px; color:var(--text-dim); margin-top:4px;}
-.tempo-reset{
-  margin-top:8px; width:100%; background:var(--panel-3); border:1px solid var(--line);
-  color:var(--text-dim); font-size:10px; letter-spacing:1px; font-weight:700;
-  padding:9px 10px; border-radius:6px; cursor:pointer; font-size:12px;
-}
-
-/* ---------- EQ ---------- */
-.eq-row{ display:flex; flex-direction:column; }
-.eq-row > * + *{ margin-top:10px; }
-.eq-band{ display:flex; align-items:center; }
-.eq-band > * + *{ margin-left:10px; }
-.eq-val{ font-size:11px; color:var(--text-dim); width:44px; text-align:right; flex-shrink:0; }
-.eq-slider{
-  -webkit-appearance:none; appearance:none;
-  flex:1; height:6px; border-radius:3px; background:var(--panel-3); outline:none;
-  touch-action:none;
-}
-.eq-slider::-webkit-slider-thumb{
-  -webkit-appearance:none; width:22px; height:22px; border-radius:50%; cursor:pointer;
-}
-.eq-band[data-band="low"] .eq-slider::-webkit-slider-thumb{ background:var(--amber); }
-.eq-band[data-band="mid"] .eq-slider::-webkit-slider-thumb{ background:#d7dae2; }
-.eq-band[data-band="high"] .eq-slider::-webkit-slider-thumb{ background:var(--teal); }
-.eq-label{ font-size:10px; letter-spacing:1.5px; font-weight:700; color:var(--text-dim); width:36px; flex-shrink:0; }
-
-.master-row{ display:flex; align-items:center; margin-top:12px; }
-.master-row > * + *{ margin-left:12px; }
-.master-row .lbl{ font-size:10px; letter-spacing:1.5px; font-weight:700; color:var(--text-dim); width:52px;}
-.master-slider{ -webkit-appearance:none; flex:1; height:4px; border-radius:2px; background:var(--panel-3); outline:none;}
-.master-slider::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:#d7dae2; cursor:pointer;}
-
-.footnote{ padding:14px 16px 26px; font-size:10.5px; line-height:1.5; color:var(--text-dim); }
-.footnote b{ color:var(--text); }
-
-input[type=range]::-moz-range-thumb{ border:none; }
-
-@media (max-width:340px){
-  .topbar{ padding:12px 12px 8px; }
-  .transport-info{ padding:2px 12px 6px; }
-  .bpm-row{ padding-left:12px; padding-right:12px; }
-  .bpm-num{ font-size:28px; }
-  .ver-badge{ font-size:8px; padding:1px 3px; }
-  .range-btn{ padding:6px 6px; font-size:10px; }
-    .loop-row{ padding:8px 12px 0; }
-    .loop-row > * + *{ margin-left:6px; }
-  .lbtn{ font-size:10px; padding:9px 0; }
-  .tbtn{ padding:12px 14px; font-size:11px; }
-  section, .card{ padding-left:12px; padding-right:12px; }
-}
+/* ---- exacte class-namen die de JS zelf toggelt (niet hernoemen!) ---- */
+.range-btn.active{ background:#5a3e24; border-color:#ff8a3d; color:#ff8a3d; }
+#keylockBtn.active{ background:#1b4a44; border-color:#2fe6c2; color:#2fe6c2; }
+#loopBtn.active{ background:#5a3e24; border-color:#ff8a3d; color:#ff8a3d; }
+#nudgeLeft.pressed, #nudgeRight.pressed{ background:#1b4a44; border-color:#2fe6c2; color:#2fe6c2; }
+#playBtn.is-playing{ background:#241a10; color:#ff8a3d; }
 </style>
 </head>
 <body>
-<div class="deck">
 
-  <div class="topbar">
-    <div>
-      <div class="brand">DECK <span>ONE</span></div>
-      <div class="track-title" id="trackTitle">Geen track geladen</div>
-      <div class="track-sub" id="trackSub">tik op laden om te starten</div>
-    </div>
-    <label class="load-btn" for="fileInput">TRACK LADEN</label>
-    <input type="file" id="fileInput">
-  </div>
+<div class="blok">
+  <span class="titel" id="trackTitle">Geen track geladen</span><span class="badge" id="verBadge">v25-simpel</span>
+  <div class="sub" id="trackSub">tik op laden om te starten</div>
+  <label class="btn" for="fileInput">TRACK LADEN (ook USB-opslag)</label>
+  <input type="file" id="fileInput">
+</div>
 
-  <div class="wave-wrap">
-    <canvas id="waveCanvas"></canvas>
-    <canvas id="overviewCanvas" class="overview-wave"></canvas>
-    <div class="vu-meter">
-      <div class="vu-bar"><div class="vu-fill" id="vuFill"></div></div>
-    </div>
-    <div class="playhead-line"></div>
-    <div class="empty-hint" id="emptyHint">laad een audiobestand (ook vanaf USB-opslag)</div>
-  </div>
-  <div class="time-row">
-    <span class="mono" id="curTime">00:00</span>
-    <span id="cueHint">geen cue-punt</span>
-    <span class="mono" id="totTime">00:00</span>
-  </div>
+<div class="blok">
+  <canvas id="waveCanvas"></canvas>
+  <div class="leeg-hint" id="emptyHint">laad een audiobestand</div>
+  <canvas id="overviewCanvas"></canvas>
+</div>
 
-  <div class="bpm-row">
-    <div class="bpm-readout">
-      <span class="bpm-num mono" id="bpmNum">120.00</span>
-      <span class="bpm-label">BPM</span>
-      <span class="ver-badge" id="verBadge">v26</span>
-    </div>
-    <div class="range-toggle" id="rangeToggle">
-      <button class="range-btn" data-range="8">±8%</button>
-      <button class="range-btn active" data-range="16">±16%</button>
-      <button class="range-btn" data-range="50">±50%</button>
-    </div>
+<div class="blok">
+  <div class="tijdrij">
+    <span class="tijd-links mono" id="curTime">00:00</span>
+    <span class="tijd-rechts mono" id="totTime">00:00</span>
+    <span class="tijd-midden" id="cueHint">geen cue-punt</span>
   </div>
+</div>
 
-  <div class="jog-area">
-    <div class="nudge-btn" id="nudgeLeft">−</div>
-    <div class="jog" id="jog"><div class="lbl" id="jogLbl">JOG</div></div>
-    <div class="nudge-btn" id="nudgeRight">+</div>
+<div class="blok">
+  <span class="bpm-groot mono" id="bpmNum">120.00</span> <span class="bpm-label">BPM</span>
+  <div id="rangeToggle" style="margin-top:8px;">
+    <span class="btn-quart range-btn" data-range="8">±8%</span><span class="btn-quart range-btn active" data-range="16">±16%</span><span class="btn-quart range-btn" data-range="50">±50%</span><span class="btn-quart" id="tapBtn">TAP</span>
   </div>
+</div>
 
-  <div class="transport">
-    <button class="tbtn cue" id="cueBtn">CUE</button>
-    <button class="tbtn play" id="playBtn">▶ PLAY</button>
-  </div>
-  <div class="loop-row">
-    <button class="lbtn" id="loopHalf">÷2</button>
-    <button class="lbtn wide" id="loopBtn">LOOP <span id="loopLen">4</span></button>
-    <button class="lbtn" id="loopDouble">×2</button>
-    <button class="lbtn tap" id="tapBtn">TAP</button>
-  </div>
+<div class="blok">
+  <span class="btn-half" id="nudgeLeft">− NUDGE</span><span class="btn-half r" id="nudgeRight">+ NUDGE</span>
+</div>
 
-  <div class="section">
-    <div class="section-head">
-      <span class="t">TEMPO</span>
-      <span class="tempo-hdr">
-        <button class="range-btn" id="keylockBtn" title="Toonhoogte vasthouden bij tempowijziging">KEYLOCK</button>
-        <span class="v mono" id="tempoVal">+0.0%</span>
-      </span>
-    </div>
-    <input type="range" class="tempo-slider" id="tempoSlider" min="-16" max="16" step="0.1" value="0">
-    <div class="tempo-scale"><span id="scaleMin">-16%</span><span>0</span><span id="scaleMax">+16%</span></div>
-    <button class="tempo-reset" id="tempoReset">RESET NAAR 0%</button>
-  </div>
+<div class="blok">
+  <span class="btn-half" id="cueBtn">CUE</span><span class="btn-half r btn-play" id="playBtn">▶ PLAY</span>
+</div>
 
-  <div class="section">
-    <div class="section-head"><span class="t">EQ (3-BAND)</span><span class="v mono" id="eqSummary"></span></div>
-    <div class="eq-row">
-      <div class="eq-band" data-band="low">
-        <div class="eq-label">LOW</div>
-        <input type="range" class="eq-slider" id="lowSlider" min="-24" max="12" step="1" value="0">
-        <div class="eq-val mono" id="lowVal">0 dB</div>
-      </div>
-      <div class="eq-band" data-band="mid">
-        <div class="eq-label">MID</div>
-        <input type="range" class="eq-slider" id="midSlider" min="-24" max="12" step="1" value="0">
-        <div class="eq-val mono" id="midVal">0 dB</div>
-      </div>
-      <div class="eq-band" data-band="high">
-        <div class="eq-label">HIGH</div>
-        <input type="range" class="eq-slider" id="highSlider" min="-24" max="12" step="1" value="0">
-        <div class="eq-val mono" id="highVal">0 dB</div>
-      </div>
-    </div>
-    <div class="master-row">
-      <span class="lbl">MASTER</span>
-      <input type="range" class="master-slider" id="masterSlider" min="0" max="1.3" step="0.01" value="1">
-    </div>
-  </div>
+<div class="blok">
+  <span class="btn-quart" id="loopHalf">÷2</span><span class="btn-quart" id="loopBtn">LOOP <span id="loopLen">4</span></span><span class="btn-quart" id="loopDouble">×2</span><span class="btn-quart" id="keylockBtn">KEYLOCK</span>
+</div>
 
-  <div class="footnote">
-    <b>Track-BPM:</b> tik op de BPM-waarde om de basis-BPM van de track handmatig in te stellen (geen auto-detectie in dit prototype) — de tempo-slider rekent daar vanaf. <b>Nudge:</b> draai aan de jog of houd −/+ ingedrukt om tijdelijk te versnellen/vertragen, net als bij een echte CDJ. Audio gaat via de normale uitgang van je telefoon naar de mic-input van je FLX4.
-  </div>
+<div class="blok">
+  <div class="label">TEMPO <span class="mono" id="tempoVal">+0.0%</span></div>
+  <input type="range" id="tempoSlider" min="-16" max="16" step="0.1" value="0">
+  <div class="schaal"><span id="scaleMin">-16%</span><span class="r" id="scaleMax">+16%</span></div>
+  <span class="btn" id="tempoReset">RESET NAAR 0%</span>
+</div>
 
+<div class="blok">
+  <div class="label">EQ (3-band) <span class="mono" id="eqSummary"></span></div>
+  <div class="eq-rij" data-band="low">
+    <div class="eq-waarde">LOW <span class="r mono" id="lowVal">0 dB</span></div>
+    <input type="range" class="eq-slider" id="lowSlider" min="-24" max="12" step="1" value="0">
+  </div>
+  <div class="eq-rij" data-band="mid">
+    <div class="eq-waarde">MID <span class="r mono" id="midVal">0 dB</span></div>
+    <input type="range" class="eq-slider" id="midSlider" min="-24" max="12" step="1" value="0">
+  </div>
+  <div class="eq-rij" data-band="high">
+    <div class="eq-waarde">HIGH <span class="r mono" id="highVal">0 dB</span></div>
+    <input type="range" class="eq-slider" id="highSlider" min="-24" max="12" step="1" value="0">
+  </div>
+</div>
+
+<div class="blok">
+  <div class="label">MASTER VOLUME</div>
+  <input type="range" id="masterSlider" min="0" max="1.3" step="0.01" value="1">
 </div>
 
 <script>
@@ -436,9 +276,6 @@ window.addEventListener('error', function(e){
   let bucketR = null, bucketG = null, bucketB = null; // RGB per bucket (band-energie)
   let beatOffset = 0;   // tijdstip (s) van de eerste gedetecteerde beat
   let bpmDetected = false;
-  let jogRotation = 0;
-  let dragging = false;
-  let lastAngle = 0;
   let wakeLock = null;
 
   // ---------- dom ----------
@@ -461,7 +298,6 @@ window.addEventListener('error', function(e){
   const cueHint = $('cueHint');
   const bpmNum = $('bpmNum');
   const rangeToggle = $('rangeToggle');
-  const jogEl = $('jog');
   const nudgeLeft = $('nudgeLeft');
   const nudgeRight = $('nudgeRight');
   const playBtn = $('playBtn');
@@ -684,14 +520,69 @@ registerProcessor('cdj-engine', CDJEngine);
     if(!file) return;
     ensureCtx();
     trackTitle.textContent = file.name;
-    trackSub.textContent = 'decoderen... (' + (file.size/1024/1024).toFixed(1) + ' MB)';
-    const arrayBuf = await file.arrayBuffer();
+    trackSub.textContent = 'bestand lezen... (' + (file.size/1024/1024).toFixed(1) + ' MB)';
+    // waarschuwing specifiek voor het LEZEN (vóór decoderen): als een bestand
+    // in Bestanden nog een iCloud-wolkje heeft (nog niet lokaal gedownload),
+    // kan dit hier onzichtbaar blijven hangen terwijl iOS het ophaalt
+    const readWarnTimer = setTimeout(()=>{
+      trackSub.textContent = 'bestand lezen duurt lang — staat er een iCloud-wolkje bij dit bestand in de Bestanden-app? Tik het bestand daar eerst één keer aan om het lokaal te downloaden, en probeer dan opnieuw.';
+    }, 8000);
+    let arrayBuf;
     try{
-      buffer = await ctx.decodeAudioData(arrayBuf);
+      // file.arrayBuffer() bestaat pas sinds Safari 14 — op oudere Safari
+      // (zoals Safari 12 op iOS 12.5.8) gebruiken we daarom de klassieke
+      // FileReader-API, die al sinds de vroegste browsers werkt.
+      arrayBuf = await new Promise((resolve, reject) => {
+        if(typeof file.arrayBuffer === 'function'){
+          file.arrayBuffer().then(resolve).catch(reject);
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error || new Error('FileReader-fout'));
+        reader.readAsArrayBuffer(file);
+      });
     }catch(err){
-      trackSub.textContent = 'kon "'+file.name+'" niet decoderen — probeer mp3, m4a of wav (ogg/opus werkt niet op iPhone)';
+      clearTimeout(readWarnTimer);
+      trackSub.textContent = 'kon bestand niet lezen: ' + (err && err.message ? err.message : err);
       return;
     }
+    clearTimeout(readWarnTimer);
+    trackSub.textContent = 'decoderen... (' + (file.size/1024/1024).toFixed(1) + ' MB)';
+    // toon een waarschuwing als decoderen langer dan 6s duurt — op oude,
+    // geheugen-arme toestellen (bv. iPhone 5, 1GB RAM) kan dit echt lang duren
+    const slowWarnTimer = setTimeout(()=>{
+      trackSub.textContent = 'nog steeds bezig... (' + (file.size/1024/1024).toFixed(1) + ' MB — kan op dit toestel wel 30-60s duren bij grote bestanden)';
+    }, 6000);
+    try{
+      // decodeAudioData: probeer eerst de moderne Promise-vorm; sommige oude
+      // WebKit-builds hangen daar stil op maar werken wel met de oudere
+      // callback-vorm, dus die proberen we als terugval. Daarnaast een harde
+      // timeout van 45s zodat de app nooit eindeloos blijft hangen zonder uitleg.
+      buffer = await Promise.race([
+        new Promise((resolve, reject) => {
+          let settled = false;
+          const p = ctx.decodeAudioData(arrayBuf,
+            (buf)=>{ if(!settled){ settled=true; resolve(buf); } },
+            (err)=>{ if(!settled){ settled=true; reject(err || new Error('decodeAudioData callback-fout')); } }
+          );
+          if(p && p.then){
+            p.then(buf=>{ if(!settled){ settled=true; resolve(buf); } })
+             .catch(err=>{ if(!settled){ settled=true; reject(err); } });
+          }
+        }),
+        new Promise((_, reject) => setTimeout(()=>reject(new Error('TIMEOUT_45S')), 45000))
+      ]);
+    }catch(err){
+      clearTimeout(slowWarnTimer);
+      if(err && err.message === 'TIMEOUT_45S'){
+        trackSub.textContent = 'decoderen duurt te lang (>45s) — dit bestand is waarschijnlijk te zwaar voor dit toestel. Probeer een korter bestand of lagere kwaliteit (128kbps mp3).';
+      } else {
+        trackSub.textContent = 'kon "'+file.name+'" niet decoderen — probeer mp3, m4a of wav (ogg/opus werkt niet op iPhone)';
+      }
+      return;
+    }
+    clearTimeout(slowWarnTimer);
     currentTrackId = trackHash(file);
     let had = false;
     try{ had = await loadTrackData(currentTrackId); }catch(err){ had = false; }
@@ -869,7 +760,6 @@ registerProcessor('cdj-engine', CDJEngine);
     isPlaying = on;
     playBtn.classList.toggle('is-playing', on);
     playBtn.innerHTML = on ? '\u2759\u2759 PAUSE' : '\u25B6 PLAY';
-    jogEl.classList.toggle('playing', on);
   }
   function killSources(){
     if(source){ source.onended=null; try{source.stop();}catch(e){} source.disconnect(); source=null; }
@@ -895,7 +785,6 @@ registerProcessor('cdj-engine', CDJEngine);
     if(!buffer) return;
     ensureCtx();
     if(ctx.state==='suspended') ctx.resume();
-    unlockAudio(); // opnieuw proberen bij elke play — de eerste poging kan falen
     killSources();
     startOffset = Math.max(0, Math.min(buffer.duration-0.001, fromOffset));
     setPlayingUI(true);
@@ -959,14 +848,66 @@ registerProcessor('cdj-engine', CDJEngine);
     else startPlayback(startOffset);
   });
 
+  // ---------- universele press/release-binding ----------
+  // Pointer Events (pointerdown/up/move) bestaan pas sinds Safari 13 (iOS 13).
+  // Op oudere Safari (zoals Safari 12 / iOS 12.5.8) vuren die events NOOIT,
+  // dus alle vasthoud- en sleep-knoppen bleven dood. Deze helper gebruikt
+  // touch- en muis-events, die al sinds de vroegste browsers werken.
+  function bindPress(el, onDown, onUp){
+    let active = false;
+    function down(e){
+      if(active) return;
+      active = true;
+      onDown && onDown(e);
+    }
+    function up(e){
+      if(!active) return;
+      active = false;
+      onUp && onUp(e);
+    }
+    el.addEventListener('touchstart', down, {passive:true});
+    el.addEventListener('touchend', up);
+    el.addEventListener('touchcancel', up);
+    el.addEventListener('mousedown', down);
+    document.addEventListener('mouseup', up);
+  }
+  function bindDrag(el, onDown, onMove, onUp){
+    let active = false;
+    function getXY(e){
+      if(e.touches && e.touches[0]) return {x:e.touches[0].clientX, y:e.touches[0].clientY};
+      return {x:e.clientX, y:e.clientY};
+    }
+    function down(e){
+      active = true;
+      const p = getXY(e);
+      onDown && onDown(p.x, p.y, e);
+    }
+    function move(e){
+      if(!active) return;
+      const p = getXY(e);
+      onMove && onMove(p.x, p.y, e);
+    }
+    function up(e){
+      if(!active) return;
+      active = false;
+      onUp && onUp(e);
+    }
+    el.addEventListener('touchstart', down, {passive:true});
+    el.addEventListener('touchmove', move, {passive:true});
+    el.addEventListener('touchend', up);
+    el.addEventListener('touchcancel', up);
+    el.addEventListener('mousedown', down);
+    document.addEventListener('mousemove', move);
+    document.addEventListener('mouseup', up);
+  }
+
   // CUE, CDJ-stijl:
   //  - spelend + druk: terug naar cue en pauzeren
   //  - gepauzeerd + druk: cue op huidige positie zetten en spelen zolang je vasthoudt
   //  - loslaten: terug naar cue, pauze
   let cueHolding = false;
-  cueBtn.addEventListener('pointerdown', (e) => {
+  bindPress(cueBtn, () => {
     if(!buffer) return;
-    try{ cueBtn.setPointerCapture(e.pointerId); }catch(err){}
     if(isPlaying){
       pausePlayback();
       startOffset = cuePoint;
@@ -977,16 +918,13 @@ registerProcessor('cdj-engine', CDJEngine);
       cueHolding = true;
       startPlayback(cuePoint);
     }
-  });
-  function cueRelease(){
+  }, () => {
     if(!cueHolding) return;
     cueHolding = false;
     pausePlayback();
     startOffset = cuePoint;
     drawWave();
-  }
-  cueBtn.addEventListener('pointerup', cueRelease);
-  cueBtn.addEventListener('pointercancel', cueRelease);
+  });
 
   // ---------- BPM / tempo ----------
   bpmNum.addEventListener('click', () => {
@@ -1057,92 +995,44 @@ registerProcessor('cdj-engine', CDJEngine);
   // ---------- nudge (buttons) ----------
   function bindNudge(el, dir){
     let active=false;
-    const press = (e)=>{ e.preventDefault(); active=true; el.classList.add('pressed'); };
-    const release = ()=>{ active=false; el.classList.remove('pressed'); };
-    el.addEventListener('pointerdown', press);
-    window.addEventListener('pointerup', release);
-    el.addEventListener('pointercancel', release);
+    bindPress(el,
+      () => { active=true; el.classList.add('pressed'); },
+      () => { active=false; el.classList.remove('pressed'); }
+    );
     el._isActive = () => active;
     el._dir = dir;
   }
   bindNudge(nudgeLeft, -1);
   bindNudge(nudgeRight, 1);
 
-  // ---------- jog wheel ----------
-  function angleFromEvent(e){
-    const rect = jogEl.getBoundingClientRect();
-    const cx = rect.left+rect.width/2, cy = rect.top+rect.height/2;
-    const dx = e.clientX-cx, dy = e.clientY-cy;
-    return Math.atan2(dy,dx)*180/Math.PI;
-  }
-  jogEl.addEventListener('pointerdown', (e)=>{
-    dragging = true;
-    lastAngle = angleFromEvent(e);
-    try{ jogEl.setPointerCapture(e.pointerId); }catch(err){}
-  });
-  jogEl.addEventListener('pointermove', (e)=>{
-    if(!dragging) return;
-    const ang = angleFromEvent(e);
-    let delta = ang - lastAngle;
-    if(delta>180) delta-=360;
-    if(delta<-180) delta+=360;
-    lastAngle = ang;
-    jogRotation += delta;
-    if(isPlaying){
-      // tijdens playback: subtiele pitch bend (nudge), max ±6%
-      nudgeOffset = Math.max(-0.06, Math.min(0.06, nudgeOffset + delta*0.0012));
-      applyRateLive();
-    } else if(buffer){
-      // alleen in pauze: door de track spoelen (1 omwenteling ≈ 1.8s)
-      startOffset = Math.max(0, Math.min(buffer.duration-0.001, startOffset + (delta/360)*1.8));
-      curTimeEl.textContent = fmtTime(startOffset);
-      drawWave();
-    }
-    updateBpmReadout();
-
-    // VU-meter
-    if(analyser && isPlaying){
-      const arr = new Uint8Array(analyser.frequencyBinCount);
-      analyser.getByteFrequencyData(arr);
-      let mx = 0;
-      for(let i=0;i<arr.length;i++) if(arr[i]>mx) mx=arr[i];
-      const pct = (mx/255)*100;
-      const fill = document.getElementById('vuFill');
-      if(fill) fill.style.width = pct+'%';
-    }
-  });
-  function endDrag(){ dragging = false; }
-  jogEl.addEventListener('pointerup', endDrag);
-  jogEl.addEventListener('pointercancel', endDrag);
+  // ---------- jog wheel: VERWIJDERD op verzoek — geen sleep/scratch meer ----------
 
   // ---------- waveform scrub (alleen in pauze) ----------
-  let waveDragging = false, waveLastX = 0;
+  let waveLastX = 0;
   waveCanvas.style.touchAction = 'none';
-  waveCanvas.addEventListener('pointerdown', (e)=>{
-    if(!buffer || isPlaying) return;   // track alleen verplaatsen in pauze
-    waveDragging = true;
-    waveLastX = e.clientX;
-    try{ waveCanvas.setPointerCapture(e.pointerId); }catch(err){}
-  });
-  waveCanvas.addEventListener('pointermove', (e)=>{
-    if(!waveDragging) return;
-    const dx = e.clientX - waveLastX;
-    waveLastX = e.clientX;
-    const secondsPerPixel = 6/waveCanvas.clientWidth; // visibleSeconds / breedte
-    startOffset = Math.max(0, Math.min(buffer.duration-0.001, startOffset - dx*secondsPerPixel));
-    curTimeEl.textContent = fmtTime(startOffset);
-    drawWave();
-  });
-  function endWaveDrag(){ waveDragging = false; }
-  waveCanvas.addEventListener('pointerup', endWaveDrag);
-  waveCanvas.addEventListener('pointercancel', endWaveDrag);
+  bindDrag(waveCanvas,
+    (x, y) => {
+      if(!buffer || isPlaying) return;   // track alleen verplaatsen in pauze
+      waveLastX = x;
+    },
+    (x, y) => {
+      if(!buffer || isPlaying) return;
+      const dx = x - waveLastX;
+      waveLastX = x;
+      const secondsPerPixel = 6/waveCanvas.clientWidth; // visibleSeconds / breedte
+      startOffset = Math.max(0, Math.min(buffer.duration-0.001, startOffset - dx*secondsPerPixel));
+      curTimeEl.textContent = fmtTime(startOffset);
+      drawWave();
+    },
+    () => {}
+  );
 
   // ---------- overzicht-waveform: needle search (werkt ook tijdens playback) ----------
-  let ovDragging = false, ovLastSeek = 0;
+  let ovLastSeek = 0;
   overviewCanvas.style.touchAction = 'none';
-  function seekFromOverviewEvent(e, throttled){
+  function seekFromOverviewXY(clientX, throttled){
     const r = overviewCanvas.getBoundingClientRect();
-    const frac = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+    const frac = Math.max(0, Math.min(1, (clientX - r.left) / r.width));
     const target = frac * buffer.duration;
     if(isPlaying){
       // tijdens playback: throttlen zodat slepen niet knettert door te veel herstarts
@@ -1156,19 +1046,11 @@ registerProcessor('cdj-engine', CDJEngine);
       drawWave();
     }
   }
-  overviewCanvas.addEventListener('pointerdown', (e)=>{
-    if(!buffer) return;
-    ovDragging = true;
-    try{ overviewCanvas.setPointerCapture(e.pointerId); }catch(err){}
-    seekFromOverviewEvent(e, false);
-  });
-  overviewCanvas.addEventListener('pointermove', (e)=>{
-    if(!ovDragging) return;
-    seekFromOverviewEvent(e, true);
-  });
-  function endOvDrag(){ ovDragging = false; }
-  overviewCanvas.addEventListener('pointerup', endOvDrag);
-  overviewCanvas.addEventListener('pointercancel', endOvDrag);
+  bindDrag(overviewCanvas,
+    (x, y) => { if(buffer) seekFromOverviewXY(x, false); },
+    (x, y) => { if(buffer) seekFromOverviewXY(x, true); },
+    () => {}
+  );
 
   // ---------- keylock ----------
   const keylockBtn = $('keylockBtn');
@@ -1235,7 +1117,9 @@ registerProcessor('cdj-engine', CDJEngine);
   // ---------- tap BPM ----------
   const tapBtn = $('tapBtn');
   let taps = [];
-  tapBtn.addEventListener('pointerdown', ()=>{
+  tapBtn.addEventListener('touchstart', tapHandler, {passive:true});
+  tapBtn.addEventListener('mousedown', tapHandler);
+  function tapHandler(){
     const now = performance.now();
     if(taps.length && now - taps[taps.length-1] > 2000) taps = []; // reset na 2s stilte
     taps.push(now);
@@ -1272,7 +1156,7 @@ registerProcessor('cdj-engine', CDJEngine);
       }
     }
     if(taps.length > 12) taps.shift();
-  });
+  }
 
   // ---------- EQ ----------
   function dbLabel(v){ return (v>0?'+':'')+v+' dB'; }
@@ -1347,8 +1231,8 @@ registerProcessor('cdj-engine', CDJEngine);
       const p = sessionEl.play(); if(p && p.catch) p.catch(()=>{});
     }
   });
-  document.addEventListener('touchstart', unlockAudio, { once:true });
-  document.addEventListener('pointerdown', unlockAudio, { once:true });
+  document.addEventListener('touchstart', unlockAudio, { once:true, passive:true });
+  document.addEventListener('mousedown', unlockAudio, { once:true });
 
   // ---------- PWA: offline cache (alleen actief als de app gehost wordt) ----------
   if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
@@ -1489,6 +1373,18 @@ registerProcessor('cdj-engine', CDJEngine);
       wctx.fillStyle = 'rgb('+bucketR[bIdx]+','+bucketG[bIdx]+','+bucketB[bIdx]+')';
       wctx.fillRect(x, y1, Math.max(1,pxPerBucket-0.5), Math.max(1,y2-y1));
     }
+
+    // afspeel-lijn: felle streep precies in het midden, waar "nu" is —
+    // getekend op het canvas zelf, dus geen los element dat kan verschuiven
+    wctx.fillStyle = '#ff8a3d';
+    wctx.fillRect(w/2 - 1, 0, 2, h);
+    wctx.fillStyle = 'rgba(255,138,61,0.9)';
+    wctx.beginPath();
+    wctx.moveTo(w/2 - 5, 0);
+    wctx.lineTo(w/2 + 5, 0);
+    wctx.lineTo(w/2, 8);
+    wctx.closePath();
+    wctx.fill();
   }
 
   // ---------- main loop ----------
@@ -1507,8 +1403,8 @@ registerProcessor('cdj-engine', CDJEngine);
     const dt = (now-lastFrame)/1000;
     lastFrame = now;
 
-    // decay drag-based nudge back toward 0 when not actively dragging
-    if(!dragging && Math.abs(nudgeOffset)>0.0001){
+    // decay nudge terug naar 0
+    if(Math.abs(nudgeOffset)>0.0001){
       nudgeOffset *= Math.max(0, 1 - dt*8);
       if(Math.abs(nudgeOffset)<0.001) nudgeOffset = 0;
       if(isPlaying) applyRateLive();
@@ -1533,13 +1429,6 @@ registerProcessor('cdj-engine', CDJEngine);
       const pct = (mx/255)*100;
       const fill = document.getElementById('vuFill');
       if(fill) fill.style.width = pct+'%';
-    }
-
-    // jog visual auto-rotation while playing (bijgehouden voor eventueel later gebruik,
-    // maar er is geen roterend element meer om te tonen op deze vereenvoudigde build)
-    if(isPlaying && !dragging){
-      const bpmNowVal = trackBPM*currentEffectiveRate();
-      jogRotation += (bpmNowVal/60)*180*dt;
     }
 
     if(buffer){

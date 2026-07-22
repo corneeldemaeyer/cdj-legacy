@@ -1,4 +1,4 @@
-const CACHE = 'pocket-cdj-v14';
+const CACHE = 'pocket-cdj-simple-v5';
 const ASSETS = ['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./icon-180.png'];
 
 self.addEventListener('install', e => {
@@ -13,7 +13,6 @@ self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   const isApp = e.request.mode === 'navigate' || url.pathname.endsWith('/index.html') || url.pathname.endsWith('/');
   if (isApp) {
-    // network-first: altijd de nieuwste app proberen, cache alleen als offline-vangnet
     e.respondWith(
       fetch(e.request).then(r => {
         const copy = r.clone();
