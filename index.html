@@ -116,7 +116,7 @@ input[type=range]::-webkit-slider-thumb{
 <body>
 
 <div class="blok">
-  <span class="titel" id="trackTitle">Geen track geladen</span><span class="badge" id="verBadge">v23-simpel</span>
+  <span class="titel" id="trackTitle">Geen track geladen</span><span class="badge" id="verBadge">v24-simpel</span>
   <div class="sub" id="trackSub">tik op laden om te starten</div>
   <label class="btn" for="fileInput">TRACK LADEN (ook USB-opslag)</label>
   <input type="file" id="fileInput">
@@ -535,7 +535,19 @@ registerProcessor('cdj-engine', CDJEngine);
     }, 8000);
     let arrayBuf;
     try{
-      arrayBuf = await file.arrayBuffer();
+      // file.arrayBuffer() bestaat pas sinds Safari 14 — op oudere Safari
+      // (zoals Safari 12 op iOS 12.5.8) gebruiken we daarom de klassieke
+      // FileReader-API, die al sinds de vroegste browsers werkt.
+      arrayBuf = await new Promise((resolve, reject) => {
+        if(typeof file.arrayBuffer === 'function'){
+          file.arrayBuffer().then(resolve).catch(reject);
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error || new Error('FileReader-fout'));
+        reader.readAsArrayBuffer(file);
+      });
     }catch(err){
       clearTimeout(readWarnTimer);
       trackSub.textContent = 'kon bestand niet lezen: ' + (err && err.message ? err.message : err);
