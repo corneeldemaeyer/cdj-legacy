@@ -230,7 +230,7 @@ input[type=range]::-moz-range-thumb{ border:none; }
   .transport-info{ padding:2px 12px 6px; }
   .bpm-row{ padding-left:12px; padding-right:12px; }
   .bpm-num{ font-size:28px; }
-  .ver-badge{ display:none; }
+  .ver-badge{ font-size:8px; padding:1px 3px; }
   .range-btn{ padding:6px 6px; font-size:10px; }
     .loop-row{ padding:8px 12px 0; }
     .loop-row > * + *{ margin-left:6px; }
@@ -272,7 +272,7 @@ input[type=range]::-moz-range-thumb{ border:none; }
     <div class="bpm-readout">
       <span class="bpm-num mono" id="bpmNum">120.00</span>
       <span class="bpm-label">BPM</span>
-      <span class="ver-badge" id="verBadge">v19</span>
+      <span class="ver-badge" id="verBadge">v20</span>
     </div>
     <div class="range-toggle" id="rangeToggle">
       <button class="range-btn" data-range="8">±8%</button>
@@ -684,7 +684,7 @@ registerProcessor('cdj-engine', CDJEngine);
     if(!file) return;
     ensureCtx();
     trackTitle.textContent = file.name;
-    trackSub.textContent = 'decoderen...';
+    trackSub.textContent = 'decoderen... (' + (file.size/1024/1024).toFixed(1) + ' MB)';
     const arrayBuf = await file.arrayBuffer();
     try{
       buffer = await ctx.decodeAudioData(arrayBuf);
